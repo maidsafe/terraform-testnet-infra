@@ -1,0 +1,55 @@
+otel-trace-pipeline:
+  delay: "100"
+  source:
+    otel_trace_source:
+      ssl: false
+      authentication:
+        unauthenticated:
+  buffer:
+    bounded_blocking:
+      buffer_size: 512
+      batch_size: 8
+  sink:
+    - pipeline:
+        name: "raw-pipeline"
+    - pipeline:
+        name: "service-map-pipeline"
+raw-pipeline:
+  delay: "3000"
+  source:
+    pipeline:
+      name: "otel-trace-pipeline"
+  buffer:
+    bounded_blocking:
+      buffer_size: 512
+      batch_size: 64
+  processor:
+    - otel_trace_raw:
+    - otel_trace_group:
+        hosts: ["{{ opensearch_domain_url }}"]
+        username: "{{ opensearch_username }}"
+        password: "{{ opensearch_password }}"
+  sink:
+    - opensearch:
+        hosts: ["{{ opensearch_domain_url }}"]
+        username: "{{ opensearch_username }}"
+        password: "{{ opensearch_password }}"
+        index: trace-analytics-raw
+service-map-pipeline:
+  delay: "100"
+  source:
+    pipeline:
+      name: "otel-trace-pipeline"
+  processor:
+    - service_map_stateful:
+        window_duration: 180
+  buffer:
+    bounded_blocking:
+      buffer_size: 512
+      batch_size: 8
+  sink:
+    - opensearch:
+        hosts: ["{{ opensearch_domain_url }}"]
+        username: "{{ opensearch_username }}"
+        password: "{{ opensearch_password }}"
+        index: trace-analytics-raw
