@@ -1,0 +1,20 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+processors:
+  batch: null
+
+exporters:
+  otlp/data-prepper:
+    endpoint: "{{ load_balancer_dns }}:4900/api/trace"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlp/data-prepper]
+    logs:
+      receivers: [otlp]
+      exporters: [otlp/data-prepper]
