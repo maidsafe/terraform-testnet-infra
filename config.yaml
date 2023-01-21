@@ -1,0 +1,23 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+processors:
+  batch: null
+
+exporters:
+  logging:
+  otlp/data-prepper:
+    endpoint: "data-prepper.dev-testnet-infra.local:21890"
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlp/data-prepper, logging]
+    logs:
+      receivers: [otlp]
+      exporters: [otlp/data-prepper]

@@ -1,4 +1,5 @@
 otel-trace-pipeline:
+  workers: 2
   delay: "100"
   source:
     otel_trace_source:
@@ -15,6 +16,7 @@ otel-trace-pipeline:
     - pipeline:
         name: "service-map-pipeline"
 raw-pipeline:
+  workers: 2
   delay: "3000"
   source:
     pipeline:
@@ -34,8 +36,9 @@ raw-pipeline:
         hosts: ["{{ opensearch_domain_url }}"]
         username: "{{ opensearch_username }}"
         password: "{{ opensearch_password }}"
-        index: trace-analytics-raw
+        index_type: trace-analytics-raw
 service-map-pipeline:
+  workers: 2
   delay: "100"
   source:
     pipeline:
@@ -52,4 +55,4 @@ service-map-pipeline:
         hosts: ["{{ opensearch_domain_url }}"]
         username: "{{ opensearch_username }}"
         password: "{{ opensearch_password }}"
-        index: trace-analytics-raw
+        index_type: trace-analytics-service-map

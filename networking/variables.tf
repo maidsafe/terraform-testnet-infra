@@ -13,7 +13,12 @@ variable "testnet_infra_vpc_name" {
   description = "The name of the testnet infra VPC"
 }
 
-variable "testnet_infra_security_group_name" {
-  default = "testnet_infra"
-  description = "The name of the testnet infra security group"
+variable "telemetry_collector_security_group_name" {
+  default = "telemetry_collector"
+  description = "The name of the telemetry collector security group"
+}
+
+variable "data_prepper_security_group_name" {
+  default = "data_prepper"
+  description = "The name of the data prepper security group"
 }
