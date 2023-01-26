@@ -18,7 +18,7 @@ variable "master_user_password" {
 }
 
 variable "instance_type" {
-  default = "t3.small.search"
+  default = "m6g.large.search"
   description = "The type of instance to be used to run the OpenSearch nodes"
 }
 

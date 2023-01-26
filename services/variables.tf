@@ -12,8 +12,12 @@ variable "data_prepper_config_efs_id" {
   description = "The ID of the EFS file system for the data prepper service"
 }
 
-variable "data_prepper_target_group_arn" {
-  description = "The ARN of the target group for the data prepper service"
+variable "telemetry_collector_config_efs_id" {
+  description = "The ID of the EFS file system for the telemetry collector service"
+}
+
+variable "telemetry_collector_target_group_arn" {
+  description = "The ARN of the target group for the telemetry collector service"
 }
 
 variable "public_subnet_ids" {
@@ -21,6 +25,14 @@ variable "public_subnet_ids" {
   type = list
 }
 
-variable "testnet_infra_security_group_id" {
-  description = "The ID of the security group for the services"
+variable "telemetry_collector_security_group_id" {
+  description = "The ID of the security group for Telemetry Collector service"
+}
+
+variable "data_prepper_security_group_id" {
+  description = "The ID of the security group for Data Prepper service"
+}
+
+variable "data_prepper_service_registry_arn" {
+  description = "The ARN of the Data Prepper service registry for DNS usage in the VPC"
 }
