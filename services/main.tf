@@ -20,8 +20,8 @@ resource "aws_ecs_task_definition" "data_prepper" {
   family                   = "${terraform.workspace}-opensearch-data-prepper"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = 2048
+  memory                   = 4096
   execution_role_arn       = var.ecs_testnet_infra_iam_role_arn
   task_role_arn            = var.ecs_testnet_infra_iam_role_arn
   container_definitions    = <<TASK_DEFINITION
@@ -98,8 +98,8 @@ resource "aws_ecs_task_definition" "telemetry_collector" {
   family                   = "${terraform.workspace}-opensearch-telemetry-collector"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = 2048
+  memory                   = 4096
   execution_role_arn       = var.ecs_testnet_infra_iam_role_arn
   task_role_arn            = var.ecs_testnet_infra_iam_role_arn
   container_definitions    = <<TASK_DEFINITION
