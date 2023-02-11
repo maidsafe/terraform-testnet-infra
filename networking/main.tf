@@ -43,6 +43,17 @@ resource "aws_service_discovery_service" "data_prepper" {
   }
 }
 
+resource "aws_service_discovery_service" "telemetry_collector" {
+  name = "telemetry-collector"
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.testnet_infra.id
+    dns_records {
+      ttl = 10
+      type = "A"
+    }
+  }
+}
+
 #
 # Security group and network ACLs for debugging and working with the EFS mounts
 #
@@ -92,6 +103,26 @@ resource "aws_security_group_rule" "testnet_infra_https_egress" {
   security_group_id = aws_security_group.debugging.id
 }
 
+resource "aws_security_group_rule" "debugging_data_prepper_egress" {
+  type              = "egress"
+  description       = "Permits access to the Data Prepper service"
+  from_port         = 4317
+  to_port           = 4317
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.debugging.id
+}
+
+resource "aws_security_group_rule" "debugging_sn_node_egress" {
+  type              = "egress"
+  description       = "Permits outbound access for Safe Node"
+  from_port         = 12000
+  to_port           = 12000
+  protocol          = "udp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.debugging.id
+}
+
 resource "aws_security_group_rule" "testnet_infra_http_egress" {
   type              = "egress"
   description       = "Permits HTTP internet access for debugging and testing"
@@ -118,6 +149,16 @@ resource "aws_security_group_rule" "testnet_infra_data_prepper_egress" {
   from_port         = 21890
   to_port           = 21890
   protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.debugging.id
+}
+
+resource "aws_security_group_rule" "debugging_sn_node_ingress" {
+  type              = "ingress"
+  description       = "Permits inbound access for Safe Node"
+  from_port         = 12000
+  to_port           = 12000
+  protocol          = "udp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.debugging.id
 }

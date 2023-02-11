@@ -1,3 +1,11 @@
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "hosted_zone_id" {
+  value = aws_service_discovery_private_dns_namespace.testnet_infra.hosted_zone
+}
+
 output "public_subnet_ids" {
   value = module.vpc.public_subnets
 }
@@ -24,4 +32,8 @@ output "telemetry_collector_security_group_id" {
 
 output "data_prepper_service_registry_arn" {
   value = aws_service_discovery_service.data_prepper.arn
+}
+
+output "telemetry_collector_service_registry_arn" {
+  value = aws_service_discovery_service.telemetry_collector.arn
 }

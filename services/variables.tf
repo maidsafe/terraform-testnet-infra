@@ -36,3 +36,7 @@ variable "data_prepper_security_group_id" {
 variable "data_prepper_service_registry_arn" {
   description = "The ARN of the Data Prepper service registry for DNS usage in the VPC"
 }
+
+variable "telemetry_collector_service_registry_arn" {
+  description = "The ARN of the Telemetry Collector service registry for DNS usage in the VPC"
+}
