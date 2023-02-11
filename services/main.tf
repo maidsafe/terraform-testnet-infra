@@ -172,4 +172,7 @@ resource "aws_ecs_service" "telemetry_collector" {
     security_groups  = [var.telemetry_collector_security_group_id]
     assign_public_ip = true
   }
+  service_registries {
+    registry_arn = var.telemetry_collector_service_registry_arn
+  }
 }
