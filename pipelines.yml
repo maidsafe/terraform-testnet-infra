@@ -8,8 +8,8 @@ otel-trace-pipeline:
         unauthenticated:
   buffer:
     bounded_blocking:
-      buffer_size: 512
-      batch_size: 8
+      buffer_size: 25600
+      batch_size: 400
   sink:
     - pipeline:
         name: "raw-pipeline"
@@ -23,8 +23,8 @@ raw-pipeline:
       name: "otel-trace-pipeline"
   buffer:
     bounded_blocking:
-      buffer_size: 512
-      batch_size: 64
+      buffer_size: 25600
+      batch_size: 3200
   processor:
     - otel_trace_raw:
     - otel_trace_group:
@@ -48,8 +48,8 @@ service-map-pipeline:
         window_duration: 180
   buffer:
     bounded_blocking:
-      buffer_size: 512
-      batch_size: 8
+      buffer_size: 25600
+      batch_size: 400
   sink:
     - opensearch:
         hosts: ["{{ opensearch_domain_url }}"]
