@@ -4,7 +4,10 @@ receivers:
       grpc:
 
 processors:
-  batch: null
+  batch:
+    send_batch_size: 8192
+    send_batch_max_size: 0
+    timeout: 200
 
 exporters:
   logging:
