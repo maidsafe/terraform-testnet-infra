@@ -21,7 +21,8 @@ init env module:
       --key-name $key_name --public-key-material $pub_key
   fi
 
-networking env: #!/usr/bin/env bash
+networking env:
+  #!/usr/bin/env bash
   set -e
   just init "{{env}}" "networking"
   cd networking
@@ -173,11 +174,14 @@ clean-opensearch-networking env:
 clean-opensearch env:
   #!/usr/bin/env bash
   set -e
-
-  just clean-opensearch-services "{{env}}"
-  just clean-opensearch-networking "{{env}}"
-
   just init "{{env}}" "opensearch"
   cd opensearch
   terraform workspace select {{env}}
   terraform destroy -auto-approve -var-file=secrets.tfvars
+
+clean-opensearch-stack env:
+  #!/usr/bin/env bash
+  set -e
+  just clean-opensearch-services "{{env}}"
+  just clean-opensearch-networking "{{env}}"
+  just clean-opensearch "{{env}}"
