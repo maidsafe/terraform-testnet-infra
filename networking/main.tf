@@ -134,3 +134,13 @@ resource "aws_security_group_rule" "testnet_sn_node_ingress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.testnet.id
 }
+
+resource "aws_security_group_rule" "testnet_sn_node_rpc_admin_ingress" {
+  type              = "ingress"
+  description       = "Permits inbound access for Safe Node RCP admin"
+  from_port         = 12001
+  to_port           = 12001
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.testnet.id
+}
