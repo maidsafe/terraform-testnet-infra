@@ -4,7 +4,9 @@ set dotenv-load := true
 init env module:
   #!/usr/bin/env bash
   cd {{module}}
-  terraform init
+  terraform init \
+    -backend-config="bucket=$TERRAFORM_STATE_BUCKET_NAME" \
+    -backend-config="region=$AWS_DEFAULT_REGION"
   terraform workspace list | grep -q "{{env}}"
   if [ $? -eq 0 ]; then
     echo "Workspace '{{env}}' already exists"
@@ -40,6 +42,7 @@ opensearch env:
 opensearch-networking env:
   #!/usr/bin/env bash
   set -e
+  just init "{{env}}" "networking"
   cd networking
   terraform workspace select {{env}}
   testnet_infra_vpc_id=$(terraform output -raw vpc_id | xargs)
