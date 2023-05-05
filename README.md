@@ -8,13 +8,29 @@ Installations of the following tools are required on your platform:
 
 * Terraform
 * [Just](https://github.com/casey/just) (a modern Makefile alternative)
-* AWS CLI
+* [AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-Create a .env at the same level where this directory is, and fill it with the following:
+Create an S3 bucket in your AWS account for storage of the Terraform state.
+
+Create a `.env` file at the same level where this directory is, and fill it with the following:
 ```
+AWS_ACCESS_KEY_ID=<value>
+AWS_SECRET_ACCESS_KEY=<value>
+AWS_DEFAULT_REGION=<value>
 SSH_PRIVATE_KEY_PATH=<path>
 SSH_PUBLIC_KEY_PATH=<path>
+TERRAFORM_STATE_BUCKET_NAME=<your bucket name>
 ```
+
+The `SSH` variables should point to the paths of private/public key files from a pair generated with something like `ssh-keygen`.
+
+## Base Networking
+
+The base networking setup defines a VPC with two public and private subnets, and a security group which opens connectivity for SSH and node communications.
+
+If you just wish to launch testnets without any Opensearch setup, you can simply create this infrastructure, then use [sn_testnet_tool](https://github.com/maidsafe/sn_testnet_tool).
+
+To create the base networking stack, run `just networking "dev"`, where "dev" is the name of the environment.
 
 ## OpenSearch Setup
 
@@ -26,7 +42,6 @@ The setup is not completely automated because both services require configuratio
 
 Here is the process for creating the infrastructure with "dev" as the environment name:
 * Run `just opensearch "dev"` to provision the OpenSearch instance.
-* Run `just networking "dev"` to create the VPC and security groups used for debugging and testing.
 * Run `just opensearch-networking "dev"` to create the load balancer and EFS file system required for running the additional services on ECS.
 * Spin up an EC2 instance on the VPC that was created and mount the Telemetry Collector and Data Prepper EFS file systems on it:
     - `sudo apt-get update -y`
