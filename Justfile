@@ -185,3 +185,12 @@ clean-opensearch-stack env:
   just clean-opensearch-services "{{env}}"
   just clean-opensearch-networking "{{env}}"
   just clean-opensearch "{{env}}"
+  
+clean-networking env:
+  #!/usr/bin/env bash
+  set -e
+  just init "{{env}}" "networking"
+  cd networking
+  terraform workspace select {{env}}
+  terraform destroy -auto-approve
+
