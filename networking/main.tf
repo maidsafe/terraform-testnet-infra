@@ -88,9 +88,9 @@ resource "aws_security_group_rule" "testnet_data_prepper_egress" {
 resource "aws_security_group_rule" "testnet_sn_node_egress" {
   type              = "egress"
   description       = "Permits outbound access for Safe Node"
-  from_port         = 12000
-  to_port           = 12000
-  protocol          = "udp"
+  from_port         = 0
+  to_port           = 65536
+  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.testnet.id
 }
@@ -130,7 +130,7 @@ resource "aws_security_group_rule" "testnet_sn_node_ingress" {
   description       = "Permits inbound access for Safe Node"
   from_port         = 12000
   to_port           = 12000
-  protocol          = "udp"
+  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.testnet.id
 }
